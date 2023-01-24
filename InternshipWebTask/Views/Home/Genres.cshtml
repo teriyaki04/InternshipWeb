@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Genres";
+}
+
+<ul class="list-group">
+    @foreach (var item in ViewBag.genres)
+    {
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <b>Жанр:</b> @item.Genre
+                <br>
+                <b>Книг в базе:</b> @item.Count
+            </div>
+        </li>
+    }
+</ul>
+

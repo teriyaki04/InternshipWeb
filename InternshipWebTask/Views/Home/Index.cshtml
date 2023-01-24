@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div>
+    <a asp-controller="Author" asp-action="Add" class="button-17" role="button">Добавить автора</a>
+</div>
+
+<br />
+
+<ul class="list-group">
+    @foreach (var item in ViewBag.authors)
+    {   
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                @if (@item.Patronymic != null)
+                {
+                    <b>Автор:</b> <span>@item.LastName @item.FirstName[0]. @item.Patronymic[0]. </span>
+                }
+                else
+                {
+                    <b>Автор:</b> <span>@item.LastName @item.FirstName[0].</span>
+                }
+                <br>
+                <b>Книг в базе:</b> @item.Count
+            </div>
+            <div>
+                <a class="btn btn-primary mr-2" asp-controller="Author" asp-action="Update" asp-route-id="@item.Id">Редактировать</a>
+                <a class="btn btn-danger mr-2 delete-author" data-author-id="@item.Id" asp-controller="Home" asp-action="Delete">Удалить</a>
+                <a class="btn btn-secondary" asp-controller="Author" asp-action="Details" asp-route-id="@item.Id">Детали</a>
+            </div>
+        </li>
+    }
+</ul>
+
+
+
