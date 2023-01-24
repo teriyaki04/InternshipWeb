@@ -1,0 +1,41 @@
+﻿@model InternshipWebTask.ViewModels.BookAddViewModel
+
+<div class="modal fade" id="addBookModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Добавить книгу</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-action="AddBook" asp-controller="Author">
+                    <div asp-validation-summary="ModelOnly"></div>
+                    <input type="hidden" name="AuthorId" value="@Model.AuthorId">
+                    <div class="form-group">
+                        <label asp-for="BookName"></label>
+                        <input asp-for="BookName" class="form-control" autocomplete="username" aria-required="true" id="bookName">
+                        <span asp-validation-for="BookName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PageQty"></label>
+                        <input asp-for="PageQty" class="form-control" autocomplete="username" aria-required="true" id="pageQty" >
+                        <span asp-validation-for="PageQty" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Genre"></label>
+                        <input asp-for="Genre" class="form-control" autocomplete="username" aria-required="true" id="genre" placeholder="Хоррор/Триллер/Фентези">
+                        <span asp-validation-for="Genre" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
