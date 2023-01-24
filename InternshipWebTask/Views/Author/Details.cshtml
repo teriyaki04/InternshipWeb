@@ -1,0 +1,63 @@
+﻿@using InternshipWebTask.ViewModels
+@{
+    ViewData["Title"] = "Author Details";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h3>Детали</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Фамилия:</dt>
+                        <dd class="col-sm-9">@Model.LastName</dd>
+                        <dt class="col-sm-3">Имя:</dt>
+                        <dd class="col-sm-9">@Model.FirstName</dd>
+                        <dt class="col-sm-3">Отчество:</dt>
+                        <dd class="col-sm-9">@Model.Patronymic</dd>
+                        <dt class="col-sm-3">Дата рождения:</dt>
+                        <dd class="col-sm-9">@Model.DateOfBirth.ToShortDateString()</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookModal">Добавить книгу</button>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12">
+            <h4>Книги:</h4>
+            <ul class="list-group">
+                @foreach (var book in Model.Books)
+                {
+                    <li class="list-group-item">
+                        <h5 class="mb-1">Название книги: @book.BookName</h5>
+                        <p class="mb-1">Жанр: @book.Genre</p>
+                        <p class="mb-1">Кол-во страниц: @book.PageQty</p>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updBookModal" onclick="setBookId('@book.Id')" >Редактировать</button>
+                        <a class="btn btn-primary mr-2 delete-book" data-book-id="@book.Id" asp-controller="Book" asp-action="Delete">Удалить</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_AddBookPartial", new BookAddViewModel() { AuthorId = @Model.Id})
+@await Html.PartialAsync("_UpdateBookPartial",new BookAddViewModel() {AuthorId = @Model.Id})
+
+@section Scripts
+{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+}
