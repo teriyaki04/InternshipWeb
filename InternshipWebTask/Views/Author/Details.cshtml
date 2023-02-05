@@ -31,6 +31,8 @@
     <div class="row mt-3">
         <div class="col-12">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookModal">Добавить книгу</button>
+            <a type="button" class="btn btn-primary"  asp-controller="Author" asp-action="SaveBooksToDb" asp-route-id="@Model.Id">Сохранить книги</a>
+            <a type="button" class="btn btn-primary"  asp-controller="Author" asp-action="ResetBookCount" asp-route-id="@Model.Id">Обнулить очередь книг</a>
         </div>
     </div>
     <div class="row mt-3">

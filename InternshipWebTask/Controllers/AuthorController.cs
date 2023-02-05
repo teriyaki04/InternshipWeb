@@ -6,10 +6,11 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace InternshipWebTask.Controllers;
-
+    
 public class AuthorController : Controller
 {
     private readonly ApplicationDbContext _context;
+    private static readonly List<Book> _books = new List<Book>();
 
     public AuthorController(ApplicationDbContext context)
     {
@@ -80,9 +81,9 @@ public class AuthorController : Controller
 
         return RedirectToAction("Index", "Home");
     }
-
+    
     [HttpPost]
-    public async Task<IActionResult> AddBook(BookAddViewModel model)
+    public IActionResult AddBook(BookAddViewModel model)
     {
         if (!ModelState.IsValid) return PartialView("_AddBookPartial",model);
     
@@ -94,12 +95,11 @@ public class AuthorController : Controller
             AuthorId = model.AuthorId
         };
 
-        await _context.Books.AddAsync(book);
-        await _context.SaveChangesAsync();
+        _books.Add(book);
         
         return RedirectToAction("Details", "Author", new  Author {Id = model.AuthorId});
     }
-
+    
     [HttpPost]
     public async Task<IActionResult> UpdateBook(BookAddViewModel model, Guid id)
     {
@@ -119,5 +119,28 @@ public class AuthorController : Controller
         await _context.SaveChangesAsync();
 
         return RedirectToAction("Details", "Author", new Author {Id = model.AuthorId});
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> SaveBooksToDb(Guid id)
+    {
+        var books = _books.Where(x => x.AuthorId == id).ToList();
+        if (books.Count == 0) return RedirectToAction("Details", "Author", new Author {Id = id});
+        
+        await _context.Books.AddRangeAsync(books);
+        await _context.SaveChangesAsync();
+        _books.RemoveAll(x => x.AuthorId == id);
+
+        return RedirectToAction("Details", "Author", new Author {Id = id});
+    }
+
+    [HttpGet]
+    public IActionResult ResetBookCount(Guid id)
+    {
+        var books = _books.Where(x => x.AuthorId == id).ToList();
+        if (books.Count == 0) return RedirectToAction("Details", "Author", new Author {Id = id});
+
+        _books.RemoveAll(x => x.AuthorId == id);
+        return RedirectToAction("Details", "Author", new Author {Id = id});
     }
 }
