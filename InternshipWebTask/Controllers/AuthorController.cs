@@ -44,6 +44,10 @@ public class AuthorController : Controller
     public IActionResult Details(Guid id)
     {
         var author = _context.Authors.Include(x => x.Books).FirstOrDefault(x => x.Id == id);
+        var books = _books.Where(x => x.AuthorId == id).ToList();
+        
+        ViewBag.books = books;
+        
         return View(author);
     }
 
@@ -89,6 +93,7 @@ public class AuthorController : Controller
     
         var book = new Book
         {
+            Id = Guid.NewGuid(),
             BookName = model.BookName,
             PageQty = model.PageQty,
             Genre = model.Genre,
@@ -142,5 +147,15 @@ public class AuthorController : Controller
 
         _books.RemoveAll(x => x.AuthorId == id);
         return RedirectToAction("Details", "Author", new Author {Id = id});
+    }
+    
+    [HttpPost]
+    public IActionResult DeleteBookFromQueue(Guid id)
+    {
+        var book = _books.Where(x => x.Id == id).ToList();
+
+        _books.RemoveAll(x => x.Id == id);
+        
+        return RedirectToAction("Details", "Author", new Author{Id = book[0].AuthorId});
     }
 }

@@ -32,6 +32,23 @@ $(document).ready(function () {
     });
 });
 
+$(document).ready(function () {
+    $('.delete-bookQ').click(function (e) {
+        e.preventDefault();
+        var bookId = $(this).data('book-id');
+        $.ajax({
+            type: 'POST',
+            url: '/Author/DeleteBookFromQueue/' + bookId,
+            success: function (response) {
+                $(e.target).closest('li').remove();
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+});
+
 function setBookId(id) {
     $("#bookId").val(id);
 }
